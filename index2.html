@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Web Speech APIU</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/web-speech.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+
+  </head>
+  <body>
+     <script>
+if (annyang) {
+  // Let's define a command.
+  const commands = {
+    'hello': () => { alert('Hello world!'); }
+  };
+
+
+ const Http = new XMLHttpRequest();
+  // Add our commands to annyang
+  annyang.addCommands(commands);
+  annyang.setLanguage('id-ID');
+
+  annyang.addCallback('resultNoMatch', function(userSaid, commandText, phrases) {
+  console.log(userSaid); // sample output: 'hello'
+  console.log(commandText); // sample output: 'hello (there)'
+  console.log(phrases); // sample output: ['hello', 'halo', 'yellow', 'polo', 'hello kitty']
+
+  console.log(userSaid[0]);
+  const url='https://trigger.macrodroid.com/629d340f-3c5d-4b17-b9b6-0892fb27ee79/fd?wa=' + userSaid[0];
+  Http.open("GET", url);
+  Http.send();
+
+  Http.onreadystatechange = (e) => {
+    console.log(Http.responseText)
+  }
+
+});
+
+  // Start listening.
+  annyang.start();
+}
+</script>
+  </body>
+</html>
+
